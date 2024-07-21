@@ -23,11 +23,11 @@ info:
 # Docs: https://redefine-docs.ohevan.com/basic/defaults
 defaults:
   # Favicon
-  favicon: /images/redefine-favicon.svg
+  favicon: /images/avatar.png
   # Site logo
-  logo: 
+  logo: /images/avatar.png
   # Site avatar
-  avatar: /images/redefine-avatar.svg
+  avatar: /images/avatar.png
 # IMAGE CONFIGURATION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -55,7 +55,7 @@ global:
       url:  # Font URL to CSS file
     # English fonts
     english: 
-      enable: false # Whether to enable custom english fonts
+      enable: true # Whether to enable custom english fonts
       family:  # Font family
       url:  # Font URL to CSS file
   # Content max width
@@ -323,7 +323,7 @@ articles:
 # Docs: https://redefine-docs.ohevan.com/posts/comment
 comment:
   # Whether to enable comment
-  enable: true
+  enable: false
   # Comment system
   system: waline # waline, gitalk, twikoo, giscus
   # System configuration
@@ -331,7 +331,7 @@ comment:
     # Waline comment system. See https://waline.js.org/
     waline:
       serverUrl: https://example.example.com # Waline server URL. e.g. https://example.example.com
-      lang: zh-CN # Waline language. e.g. zh-CN, en-US. See https://waline.js.org/guide/client/i18n.html
+      lang: en-US # Waline language. e.g. zh-CN, en-US. See https://waline.js.org/guide/client/i18n.html
       emoji: [] # Waline emojis, see https://waline.js.org/guide/features/emoji.html
       recaptchaV3Key: wasd # Google reCAPTCHA v3 key. See https://waline.js.org/reference/client/props.html#recaptchav3key
       turnstileKey: # Turnstile key. See https://waline.js.org/reference/client/props.html#turnstilekey
