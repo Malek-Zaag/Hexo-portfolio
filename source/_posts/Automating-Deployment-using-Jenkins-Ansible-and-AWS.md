@@ -2,6 +2,8 @@
 title: Automating Deployment using Jenkins, Ansible and AWS
 date: 2023-11-18 12:40:02
 tags:
+categories: [Blogs]
+sticky: 999
 ---
 
 # Automating Deployment using Jenkins,Ansible and AWS
@@ -192,19 +194,3 @@ ip_address hostname
 ```
 
 So ansible can resolve ip-one and ip-two to their correct addresses.
-
----
-
-Was this helpful?
-
-Confusing?
-
-If you have any questions, feel free to comment below!
-
-Before you leave:
-
-👏 Clap for the story
-
-📰 Subscribe for more posts like this [@malek.zaag](https://medium.com/@malek.zaag)
-
-👉👈 Please follow me: [GitHub](https://github.com/Malek-Zaag) | [LinkedIn](https://www.linkedin.com/in/malekzaag/)

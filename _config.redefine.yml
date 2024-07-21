@@ -157,11 +157,10 @@ home_banner:
     style: default # default, reverse, center
     # Social links
     links:
-      github:  # your GitHub URL
-      instagram: # your Instagram URL
-      zhihu:  # your ZhiHu URL
-      twitter:  # your twitter URL
-      email:  # your email
+      github:  https://github.com/Malek-Zaag
+      twitter:  https://x.com/MalekZaag
+      linkedin: https://www.linkedin.com/in/malekzaag/
+      email:  zaag.malek1@gmail.com
       # ...... # you can add more
     # Social links with QRcode drawers
     qrs:
@@ -189,19 +188,19 @@ navbar:
     Home: 
       path: / 
       icon: fa-regular fa-house # can be empty
-    # Archives: 
-    #   path: /archives 
-    #   icon: fa-regular fa-archive # can be empty
-    # Status: 
-    #   path: https://status.ohevan.com/
-    #   icon: fa-regular fa-chart-bar
-    # About: 
-    #   icon: fa-regular fa-user
-    #   submenus:
-    #     Me: /about
-    #     Github: https://github.com/EvanNotFound/hexo-theme-redefine
-    #     Blog: https://ohevan.com
-    #     Friends: /friends
+    Categories: 
+      icon: fa-solid fa-folder
+      path: /categories/ 
+    Archives: 
+      path: /archives 
+      icon: fa-regular fa-archive # can be empty
+    About: 
+      icon: fa-regular fa-user
+      submenus:
+        Me: /about
+        Github: https://github.com/Malek-Zaag
+        Linkedin: https://www.linkedin.com/in/malekzaag/
+        Twitter:  https://x.com/MalekZaag
     # Links: 
     #   icon: fa-regular fa-link
     #   submenus:
@@ -297,25 +296,24 @@ articles:
     expand: true # Whether to expand TOC
     init_open: true # Open toc by default
   # Whether to enable copyright notice
-  copyright:
-    enable: true # Whether to enable
-    default: cc_by_nc_sa # Default license, can be cc_by_nc_sa, cc_by_nd, cc_by_nc, cc_by_sa, cc_by, all_rights_reserved, public_domain
+  # copyright:
+  #   enable: false # Whether to enable
   # Whether to enable lazyload for images
   lazyload: true
   # Article recommendation. Requires nodejieba (npm install nodejieba). Transplanted from hexo-theme-volantis.
-  recommendation:
-    # Whether to enable article recommendation
-    enable: false
-    # Article recommendation title
-    title: 推荐阅读
-    # Max number of articles to display
-    limit: 3
-    # Max number of articles to display mobile
-    mobile_limit: 2
-    # Placeholder image
-    placeholder: /images/wallhaven-wqery6-light.webp
-    # Skip directory
-    skip_dirs: []
+  # recommendation:
+  #   # Whether to enable article recommendation
+  #   enable: false
+  #   # Article recommendation title
+  #   title: 推荐阅读
+  #   # Max number of articles to display
+  #   limit: 3
+  #   # Max number of articles to display mobile
+  #   mobile_limit: 2
+  #   # Placeholder image
+  #   placeholder: /images/wallhaven-wqery6-light.webp
+  #   # Skip directory
+  #   skip_dirs: []
 # ARTICLE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -372,7 +370,7 @@ footer:
   # Icon in footer, write fontawesome icon code here
   icon: '<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>'
   # The start time of the website, format: YYYY/MM/DD HH:mm:ss
-  start: 2022/8/17 11:45:14
+  start: 2024/7/21 11:45:14
   # Site statistics
   statistics: true # show site statistics or not (total articles, total words)
   # Footer message

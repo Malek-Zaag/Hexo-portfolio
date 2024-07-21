@@ -2,6 +2,8 @@
 title: Serverless text-to-speech API with AWS API Gateway and CloudFront🤖
 date: 2024-04-21 13:18:03
 tags:
+categories: [Blogs]
+# sticky: 999
 ---
 
 # Serverless text-to-speech API with AWS API Gateway and CloudFront­ƒñû
@@ -147,15 +149,3 @@ And we add the resource policy in the S3 bucket to allow CloudFront to access th
 Now we can have a nice looking front page which sends a text to a serverless api and gets back the generated audio file, which obviously can be downloaded :
 
 ![](https://cdn-images-1.medium.com/max/2000/1*IyhqxcjMVtzyhBKZ4XIvfg.png)
-
----
-
-Was this helpful? Confusing? If you have any questions, feel free to contact me!
-
-Before you leave:
-
-👏 Clap for the story
-
-📰 Subscribe for more posts like this [@malek.zaag](https://medium.com/@malek.zaag)
-
-👉👈 Please follow me: [GitHub](https://github.com/Malek-Zaag) | [LinkedIn](https://www.linkedin.com/in/malekzaag/)
