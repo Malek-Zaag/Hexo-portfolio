@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Malek Zaag">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/09/28/how-to-configure-monitoring-for-azure-kubernetes-service/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="How to configure monitoring for Azure Kubernetes ServiceIn this article, I am going to demonstrate how we can configure monitoring service for our Azure Kubernetes cluster and how we manage to receive">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to configure monitoring for Azure Kubernetes Service">
+<meta property="og:url" content="http://example.com/2023/09/28/How-to-configure-monitoring-for-Azure-Kubernetes-Service/index.html">
+<meta property="og:site_name" content="Malek Zaag">
+<meta property="og:description" content="How to configure monitoring for Azure Kubernetes ServiceIn this article, I am going to demonstrate how we can configure monitoring service for our Azure Kubernetes cluster and how we manage to receive">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*k8qtq8cq3-vg8p4niLODsA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2620/1*0P3XuGrK6nW_DotGKQwkfw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2490/1*IAgpR2MpTLrLyztsElwlgA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*JfZNU9c-8pqDfLo7IqIceQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2400/0*41tBGnJ9OuD4ntXz">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*Lc2BQlMF1AU31A5WNIn2kw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/3340/1*TTVtV5u0hxhll6ckZDXWBg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2036/1*pezccRh7sq0ECY_yn8ZWdg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/3322/1*Lb92F_j_QG9dS-WgQygNgQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/3324/1*ATkZrAFVH3aBDL1opxk0Eg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/3258/1*aGhVIYrmyQORr6pAV1idvA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*bBLeMWswu2xAjoMzw2vd0Q.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*UoYweF4r1Xu0ZNtm9I4jjg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/0*cDpsNH9pjKfB2Bbl">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*TPGs5cudh8QTtAK2y4D99Q.png">
+<meta property="article:published_time" content="2023-09-28T16:30:36.000Z">
+<meta property="article:modified_time" content="2024-07-27T16:33:40.420Z">
+<meta property="article:author" content="Malek Zaag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/2000/1*k8qtq8cq3-vg8p4niLODsA.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/avatar.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            How to configure monitoring for Azure Kubernetes Service -
+        
+        Malek Zaag
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":true,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I am Malek 👋","subtitle":{"text":["Cloud Engineer and CyberSecurity Enthusiast"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":"https://github.com/Malek-Zaag","instagram":null,"zhihu":null,"twitter":"https://x.com/MalekZaag","email":"zaag.malek1@gmail.com","linkedin":"https://www.linkedin.com/in/malekzaag/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/Malek-Zaag","Linkedin":"https://www.linkedin.com/in/malekzaag/","Twitter":"https://x.com/MalekZaag","Medium":"https://medium.com/@malek.zaag","Credly":"https://www.credly.com/users/malek-zaag"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/7/21 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Malek Zaag
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/avatar.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Malek Zaag
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Malek-Zaag">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/malekzaag/">
+                                                    LINKEDIN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://x.com/MalekZaag">
+                                                    TWITTER
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://medium.com/@malek.zaag">
+                                                    MEDIUM
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.credly.com/users/malek-zaag">
+                                                    CREDLY
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Malek-Zaag">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.linkedin.com/in/malekzaag/">LINKEDIN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://x.com/MalekZaag">TWITTER</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://medium.com/@malek.zaag">MEDIUM</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.credly.com/users/malek-zaag">CREDLY</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">How to configure monitoring for Azure Kubernetes Service</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Malek Zaag</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-09-28 18:30:36</span>
+        <span class="mobile">2023-09-28 18:30:36</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-27 18:33:40</span>
+            <span class="mobile">2024-07-27 18:33:40</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Blogs/">Blogs</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="How-to-configure-monitoring-for-Azure-Kubernetes-Service"><a href="#How-to-configure-monitoring-for-Azure-Kubernetes-Service" class="headerlink" title="How to configure monitoring for Azure Kubernetes Service"></a>How to configure monitoring for Azure Kubernetes Service</h1><p>In this article, I am going to demonstrate how we can configure monitoring service for our Azure Kubernetes cluster and how we manage to receive alert notifications (Email and Mobile App notification) when it is under heavy load.</p>
+<h2 id="Installing-Kubernetes"><a href="#Installing-Kubernetes" class="headerlink" title="Installing Kubernetes"></a>Installing Kubernetes</h2><p>Since I am fond of IaC, I decided to provision my Infrastructure using code, so I wrote the following terraform file :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">terraform &#123;</span><br><span class="line">  required_providers &#123;</span><br><span class="line">    azurerm = &#123;</span><br><span class="line">      <span class="built_in">source</span>  = <span class="string">&quot;hashicorp/azurerm&quot;</span></span><br><span class="line">      version = <span class="string">&quot;3.74.0&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">provider <span class="string">&quot;azurerm&quot;</span> &#123;</span><br><span class="line">  features &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  subscription_id = var.subscription_id</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_resource_group&quot;</span> <span class="string">&quot;example&quot;</span> &#123;</span><br><span class="line">  name     = <span class="string">&quot;AKS-rg&quot;</span></span><br><span class="line">  location = <span class="string">&quot;West Europe&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;random_id&quot;</span> <span class="string">&quot;workspace&quot;</span> &#123;</span><br><span class="line">  keepers = &#123;</span><br><span class="line">    <span class="comment"># Generate a new id each time we switch to a new resource group</span></span><br><span class="line">    group_name = azurerm_resource_group.example.name</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  byte_length = 8</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_log_analytics_workspace&quot;</span> <span class="string">&quot;example&quot;</span> &#123;</span><br><span class="line">  name                = <span class="string">&quot;k8s-workspace-<span class="variable">$&#123;random_id.workspace.hex&#125;</span>&quot;</span></span><br><span class="line">  location            = azurerm_resource_group.example.location</span><br><span class="line">  resource_group_name = azurerm_resource_group.example.name</span><br><span class="line">  sku                 = <span class="string">&quot;PerGB2018&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_log_analytics_solution&quot;</span> <span class="string">&quot;example&quot;</span> &#123;</span><br><span class="line">  solution_name         = <span class="string">&quot;ContainerInsights&quot;</span></span><br><span class="line">  location              = azurerm_resource_group.example.location</span><br><span class="line">  resource_group_name   = azurerm_resource_group.example.name</span><br><span class="line">  workspace_resource_id = azurerm_log_analytics_workspace.example.id</span><br><span class="line">  workspace_name        = azurerm_log_analytics_workspace.example.name</span><br><span class="line"></span><br><span class="line">  plan &#123;</span><br><span class="line">    publisher = <span class="string">&quot;Microsoft&quot;</span></span><br><span class="line">    product   = <span class="string">&quot;OMSGallery/ContainerInsights&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_kubernetes_cluster&quot;</span> <span class="string">&quot;example&quot;</span> &#123;</span><br><span class="line">  name                = <span class="string">&quot;example-aks1&quot;</span></span><br><span class="line">  location            = azurerm_resource_group.example.location</span><br><span class="line">  resource_group_name = azurerm_resource_group.example.name</span><br><span class="line">  dns_prefix          = <span class="string">&quot;my-cluster&quot;</span></span><br><span class="line">  sku_tier            = <span class="string">&quot;Standard&quot;</span></span><br><span class="line"></span><br><span class="line">  default_node_pool &#123;</span><br><span class="line">    name       = <span class="string">&quot;default&quot;</span></span><br><span class="line">    node_count = 2</span><br><span class="line">    vm_size    = <span class="string">&quot;Standard_A2_v2&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  identity &#123;</span><br><span class="line">    <span class="built_in">type</span> = <span class="string">&quot;SystemAssigned&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tags = &#123;</span><br><span class="line">    Environment = <span class="string">&quot;Test&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  automatic_channel_upgrade        = <span class="string">&quot;stable&quot;</span></span><br><span class="line">  http_application_routing_enabled = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  oms_agent &#123;</span><br><span class="line">    log_analytics_workspace_id = azurerm_log_analytics_workspace.example.id</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>In the previous file, I provisionned the kubernetes cluster, a log analytics solution which is ContainerInsights and the log analytics workspace to edit and run log queries from data collected if needed .</p>
+<h2 id="Creating-Azure-logic-App"><a href="#Creating-Azure-logic-App" class="headerlink" title="Creating Azure logic App"></a>Creating Azure logic App</h2><p>Setting the logic app is pretty easy and you can customize the settings as you need :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*k8qtq8cq3-vg8p4niLODsA.png"
+                      alt="logic app"
+                ><em>logic app</em></p>
+<p>Now we set our trigger (HTTP request) and the action (send Email to me on trigger) :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2620/1*0P3XuGrK6nW_DotGKQwkfw.png"
+                      alt="Setting up trigger and action"
+                ><em>Setting up trigger and action</em></p>
+<h3 id="Testing-the-Email"><a href="#Testing-the-Email" class="headerlink" title="Testing the Email :"></a>Testing the Email :</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2490/1*IAgpR2MpTLrLyztsElwlgA.png"
+                      alt="logic app designer"
+                ><em>logic app designer</em></p>
+<p>I tested the app using the button and it worked fine :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*JfZNU9c-8pqDfLo7IqIceQ.png"
+                      alt="email received"
+                ><em>email received</em></p>
+<h2 id="Creating-alert"><a href="#Creating-alert" class="headerlink" title="Creating alert"></a>Creating alert</h2><p>Alert on Azure need a trigger to run (generally triggers are related to metrics), and after the trigger is launched some actions are invoked in order to notify the administrator or the user, or simply to do some actions :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2400/0*41tBGnJ9OuD4ntXz"
+                      alt="Alert explanation"
+                ><em>Alert explanation</em></p>
+<p>In this tutorial, I am going to create the alert, the action group and the alert processing to rule :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*Lc2BQlMF1AU31A5WNIn2kw.png"
+                      alt="alert creation"
+                ><em>alert creation</em></p>
+<p>Alert created with a severity of critical and it is triggered when node CPU usage average exceeds 70% :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/3340/1*TTVtV5u0hxhll6ckZDXWBg.png"
+                     
+                ></p>
+<h3 id="Creating-an-action-group"><a href="#Creating-an-action-group" class="headerlink" title="Creating an action group"></a>Creating an action group</h3><p>I created the action group :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2036/1*pezccRh7sq0ECY_yn8ZWdg.png"
+                     
+                ></p>
+<p>Then I configured actions so that I can receive mobile app notification on my phone and trigger logic app by a HTTP request :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/3322/1*Lb92F_j_QG9dS-WgQygNgQ.png"
+                     
+                ></p>
+<p>Adding Logic App to action group:</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/3324/1*ATkZrAFVH3aBDL1opxk0Eg.png"
+                     
+                ></p>
+<h3 id="Creating-alert-processing-Rule-and-assigning-action-group"><a href="#Creating-alert-processing-Rule-and-assigning-action-group" class="headerlink" title="Creating alert processing Rule and assigning action group"></a>Creating alert processing Rule and assigning action group</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/3258/1*aGhVIYrmyQORr6pAV1idvA.png"
+                      alt="alert processing rule"
+                ><em>alert processing rule</em></p>
+<h2 id="Load-and-stress-Testing-for-Kubernetes"><a href="#Load-and-stress-Testing-for-Kubernetes" class="headerlink" title="Load and stress Testing for Kubernetes"></a>Load and stress Testing for Kubernetes</h2><p>Now everything in place we need to start loading the cluster:</p>
+<ul>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://www.techtarget.com/searchsoftwarequality/definition/load-testing" >**Load test <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.** How the system responds to a sudden increase in requests.</p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://www.techtarget.com/searchsoftwarequality/definition/Soak-testing" >**Endurance test <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.** How the system survives a constant, moderate load for longer duration of times. It can also be referred to as a *soak test*, referring to the long time the software spends under test.</p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://www.techtarget.com/searchsoftwarequality/definition/stress-testing" >**Stress test <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.** How the system responds under a heavy load, with an intent to find out the point at which system is stressed and ceases functioning.</p>
+</li>
+</ul>
+<h2 id="Add-load-to-the-application"><a href="#Add-load-to-the-application" class="headerlink" title="Add load to the application"></a>Add load to the application</h2><p>We go by stress test in order to provoke CPU usage so i deployed a pod running PHP application .</p>
+<p>Once the PHP web application is running in the cluster and we have set up an autoscaling deployment, introduce load on the web application. This tutorial uses a <a class="link"   target="_blank" rel="noopener" href="https://hub.docker.com/_/busybox" >BusyBox <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> image in a container and infinite web requests running from BusyBox to the PHP web application.</p>
+<p>BusyBox is a lightweight image of many common UNIX utilities, such as GNU Wget. Another tool that enables load testing is the open source <a class="link"   target="_blank" rel="noopener" href="https://github.com/rakyll/hey" >Hey <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, which creates concurrent processes to send requests to an endpoint.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f .\php-apache.yaml</span><br><span class="line">deployment.apps/php-apache created</span><br><span class="line">service/php-apache created</span><br><span class="line"></span><br><span class="line">$ kubectl apply -f .\stress-test.yaml</span><br><span class="line">deployment.apps/infinite-calls created</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">NAME                              READY   STATUS    RESTARTS   AGE</span><br><span class="line">infinite-calls-5cffd59c59-4xnpx   1/1     Running   0          29s</span><br><span class="line">php-apache-7495ff8f5b-nqctr       1/1     Running   0          2m42s</span><br></pre></td></tr></table></figure></div>
+
+<p>In order to spice up things i decided to scale out the BusyBox pods in order to have more requests and throttle the CPU :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale deployment/infinite-calls --replicas 4</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*bBLeMWswu2xAjoMzw2vd0Q.png"
+                     
+                ></p>
+<p>Finally Scaling to 40 replicas :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale deployment/infinite-calls --replicas 40</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*UoYweF4r1Xu0ZNtm9I4jjg.png"
+                     
+                ></p>
+<p>But still my CPU isn’t going as higher as I want so I did a lot of digging and find the following github Repo :<br><a target="_blank" rel="noopener" href="https://github.com/giantswarm/kube-stresscheck"><strong>GitHub - giantswarm&#x2F;kube-stresscheck: Script to check Kubernetes nodes on stress (CPU&#x2F;RAM)</strong><br><em>Script to check Kubernetes nodes on stress (CPU&#x2F;RAM) resistance. - GitHub - giantswarm&#x2F;kube-stresscheck: Script toÔÇª</em>github.com</a></p>
+<p>It is simply a script written in Go to check Kubernetes nodes on stress (CPU&#x2F;RAM) resistance.</p>
+<p>i deployed the yaml file in the repo and Voila ! The cluster CPU is going up and after 1 minute i got an alert on both my phone and Email :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/0*cDpsNH9pjKfB2Bbl"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*TPGs5cudh8QTtAK2y4D99Q.png"
+                     
+                ></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Azure Kubernetes monitoring seem to be difficult but using the managed Azure metrics and ContainerInsgihts is it very easy and helpful when it comes to alerting and Incident response.</p>
+<hr>
+<p>Was this helpful? Confusing?<br>If you have any questions, feel free to comment below! Make sure to follow on Linkedin: <a class="link"   target="_blank" rel="noopener" href="https://www.linkedin.com/in/malekzaag/" >https://www.linkedin.com/in/malekzaag/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and github: <a class="link"   target="_blank" rel="noopener" href="https://github.com/Malek-Zaag" >https://github.com/Malek-Zaag <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> if you’re interested in similar content and want to keep learning alongside me!</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> How to configure monitoring for Azure Kubernetes Service</li>
+        <li><strong>Author:</strong> Malek Zaag</li>
+        <li><strong>Created at
+                :</strong> 2023-09-28 18:30:36</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-07-27 18:33:40
+            </li>
+        
+        <li>
+            <strong>Link:</strong> http://example.com/2023/09/28/How-to-configure-monitoring-for-Azure-Kubernetes-Service/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/11/18/Automating-Deployment-using-Jenkins-Ansible-and-AWS/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Automating Deployment using Jenkins, Ansible and AWS</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/02/13/Deploying-2-high-availability-web-applications-using-terraform/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Deploying 2 high availability web applications using terraform</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">How to configure monitoring for Azure Kubernetes Service</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#How-to-configure-monitoring-for-Azure-Kubernetes-Service"><span class="nav-text">How to configure monitoring for Azure Kubernetes Service</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Installing-Kubernetes"><span class="nav-text">Installing Kubernetes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-Azure-logic-App"><span class="nav-text">Creating Azure logic App</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Testing-the-Email"><span class="nav-text">Testing the Email :</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-alert"><span class="nav-text">Creating alert</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-an-action-group"><span class="nav-text">Creating an action group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-alert-processing-Rule-and-assigning-action-group"><span class="nav-text">Creating alert processing Rule and assigning action group</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Load-and-stress-Testing-for-Kubernetes"><span class="nav-text">Load and stress Testing for Kubernetes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add-load-to-the-application"><span class="nav-text">Add load to the application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Malek Zaag</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        8 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

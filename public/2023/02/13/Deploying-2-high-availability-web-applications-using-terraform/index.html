@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Malek Zaag">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/02/13/deploying-2-high-availability-web-applications-using-terraform/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Deploying 2 high availability web applications using terraformOverview : Hello, in this article we are going to create step by step two virtual machines to run our api and then create a loadbalancer a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deploying 2 high availability web applications using terraform">
+<meta property="og:url" content="http://example.com/2023/02/13/Deploying-2-high-availability-web-applications-using-terraform/index.html">
+<meta property="og:site_name" content="Malek Zaag">
+<meta property="og:description" content="Deploying 2 high availability web applications using terraformOverview : Hello, in this article we are going to create step by step two virtual machines to run our api and then create a loadbalancer a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*eZ68clEp2x7E36iEZLDxyQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*i2XsJPq5gQ9N_kgDmQzksw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*vKpdwyIGJpd6FJse2wFBzA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*Ef95Os6OxSmUfNr_4v0hFw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*A8lm7bsUc3rPIkbps5DMSA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*gjlE_dmUT_bVv4dZ5o0dCQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*nbo1E3lRJBBsh-Hx22UI6w.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/2000/1*WCN-p-e4trzfTRXaPopuiQ.png">
+<meta property="article:published_time" content="2023-02-13T17:39:03.000Z">
+<meta property="article:modified_time" content="2024-07-27T16:42:42.982Z">
+<meta property="article:author" content="Malek Zaag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/2000/1*eZ68clEp2x7E36iEZLDxyQ.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/avatar.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Deploying 2 high availability web applications using terraform -
+        
+        Malek Zaag
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":true,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I am Malek 👋","subtitle":{"text":["Cloud Engineer and CyberSecurity Enthusiast"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":"https://github.com/Malek-Zaag","instagram":null,"zhihu":null,"twitter":"https://x.com/MalekZaag","email":"zaag.malek1@gmail.com","linkedin":"https://www.linkedin.com/in/malekzaag/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/Malek-Zaag","Linkedin":"https://www.linkedin.com/in/malekzaag/","Twitter":"https://x.com/MalekZaag","Medium":"https://medium.com/@malek.zaag","Credly":"https://www.credly.com/users/malek-zaag"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/7/21 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Malek Zaag
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/avatar.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Malek Zaag
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Malek-Zaag">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/malekzaag/">
+                                                    LINKEDIN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://x.com/MalekZaag">
+                                                    TWITTER
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://medium.com/@malek.zaag">
+                                                    MEDIUM
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.credly.com/users/malek-zaag">
+                                                    CREDLY
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Malek-Zaag">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.linkedin.com/in/malekzaag/">LINKEDIN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://x.com/MalekZaag">TWITTER</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://medium.com/@malek.zaag">MEDIUM</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.credly.com/users/malek-zaag">CREDLY</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Deploying 2 high availability web applications using terraform</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Malek Zaag</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-02-13 18:39:03</span>
+        <span class="mobile">2023-02-13 18:39:03</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-27 18:42:42</span>
+            <span class="mobile">2024-07-27 18:42:42</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Blogs/">Blogs</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="Deploying-2-high-availability-web-applications-using-terraform"><a href="#Deploying-2-high-availability-web-applications-using-terraform" class="headerlink" title="Deploying 2 high availability web applications using terraform"></a>Deploying 2 high availability web applications using terraform</h1><p>Overview :</p>
+<p>Hello, in this article we are going to create step by step two virtual machines to run our api and then create a loadbalancer and link it to them .</p>
+<p>This is the architecture that we are going to build :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*eZ68clEp2x7E36iEZLDxyQ.png"
+                     
+                ></p>
+<p>First of all, let’s talk about the idea behind Infrastructure as code and Terraform.</p>
+<h3 id="Infrastructure-as-code"><a href="#Infrastructure-as-code" class="headerlink" title="Infrastructure as code :"></a>Infrastructure as code :</h3><p>Infrastructure as Code (IaC) is the managing and provisioning of infrastructure through code instead of through manual processes.</p>
+<p>With IaC, configuration files are created that contain your infrastructure specifications, which makes it easier to edit and distribute configurations. It also ensures that you provision the same environment every time.</p>
+<h3 id="Terraform"><a href="#Terraform" class="headerlink" title="Terraform :"></a>Terraform :</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*i2XsJPq5gQ9N_kgDmQzksw.png"
+                     
+                ></p>
+<p>HashiCorp Terraform is an infrastructure as code tool that lets you define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share.</p>
+<p>Now, let’s explain our script main.tf which will hold the resources for our infrastructure :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">terraform &#123;</span><br><span class="line">  required_providers &#123;</span><br><span class="line">    azurerm = &#123;</span><br><span class="line">      <span class="built_in">source</span>  = <span class="string">&quot;hashicorp/azurerm&quot;</span></span><br><span class="line">      version = <span class="string">&quot;~&gt; 3.0.0&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  required_version = <span class="string">&quot;&gt;= 0.14.9&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">provider <span class="string">&quot;azurerm&quot;</span> &#123;</span><br><span class="line">  <span class="comment"># Configuration options</span></span><br><span class="line">  features &#123;&#125;</span><br><span class="line">  subscription_id = var.subscription_id</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Here we are going to use the ┬½ azurerm ┬╗ provider and we set it to use our azure subsrcition id.</p>
+<p>Then we start creating our resource group, then create our Virtual network which will act as private cloud for our machines :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">resource <span class="string">&quot;azurerm_resource_group&quot;</span> <span class="string">&quot;notes-api-azure-resource-group&quot;</span> &#123;</span><br><span class="line">  name     = <span class="string">&quot;my-notes-api-rg&quot;</span></span><br><span class="line">  location = <span class="string">&quot;West Europe&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_virtual_network&quot;</span> <span class="string">&quot;notes-api-virtual-network&quot;</span> &#123;</span><br><span class="line">  name                = <span class="string">&quot;my-virtual-network&quot;</span></span><br><span class="line">  location            = azurerm_resource_group.notes-api-azure-resource-group.location</span><br><span class="line">  address_space       = [<span class="string">&quot;10.0.0.0/16&quot;</span>]</span><br><span class="line">  resource_group_name = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We need to create our virtual machines now :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">resource <span class="string">&quot;azurerm_subnet&quot;</span> <span class="string">&quot;notes-api-subnet&quot;</span> &#123;</span><br><span class="line">  name                 = <span class="string">&quot;my-subnet&quot;</span></span><br><span class="line">  resource_group_name  = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">  virtual_network_name = azurerm_virtual_network.notes-api-virtual-network.name</span><br><span class="line">  address_prefixes     = [<span class="string">&quot;10.0.1.0/24&quot;</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_network_interface&quot;</span> <span class="string">&quot;notes-api-network-interface&quot;</span> &#123;</span><br><span class="line">  count               = 2</span><br><span class="line">  name                = <span class="string">&quot;acctni<span class="variable">$&#123;count.index&#125;</span>&quot;</span></span><br><span class="line">  resource_group_name = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">  location            = azurerm_resource_group.notes-api-azure-resource-group.location</span><br><span class="line">  ip_configuration &#123;</span><br><span class="line">    name                          = <span class="string">&quot;testConfiguration&quot;</span></span><br><span class="line">    subnet_id                     = azurerm_subnet.notes-api-subnet.id</span><br><span class="line">    private_ip_address_allocation = <span class="string">&quot;Dynamic&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_availability_set&quot;</span> <span class="string">&quot;notes-api-aset&quot;</span> &#123;</span><br><span class="line">  name                         = <span class="string">&quot;my-availability-set&quot;</span></span><br><span class="line">  location                     = azurerm_resource_group.notes-api-azure-resource-group.location</span><br><span class="line">  resource_group_name          = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">  platform_fault_domain_count  = 2</span><br><span class="line">  platform_update_domain_count = 2</span><br><span class="line">  managed                      = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource <span class="string">&quot;azurerm_linux_virtual_machine&quot;</span> <span class="string">&quot;notes-api-vm&quot;</span> &#123;</span><br><span class="line">  count                 = 2</span><br><span class="line">  name                  = <span class="string">&quot;acctvm<span class="variable">$&#123;count.index&#125;</span>&quot;</span></span><br><span class="line">  location              = azurerm_resource_group.notes-api-azure-resource-group.location</span><br><span class="line">  availability_set_id   = azurerm_availability_set.notes-api-aset.id</span><br><span class="line">  resource_group_name   = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">  network_interface_ids = [element(azurerm_network_interface.notes-api-network-interface.*.<span class="built_in">id</span>, count.index)]</span><br><span class="line">  size                  = <span class="string">&quot;Standard_B1s&quot;</span></span><br><span class="line"></span><br><span class="line">  source_image_reference &#123;</span><br><span class="line">    publisher = <span class="string">&quot;Canonical&quot;</span></span><br><span class="line">    offer     = <span class="string">&quot;UbuntuServer&quot;</span></span><br><span class="line">    sku       = <span class="string">&quot;18.04-LTS&quot;</span></span><br><span class="line">    version   = <span class="string">&quot;latest&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">  admin_ssh_key &#123;</span><br><span class="line">    username   = <span class="string">&quot;azureuser&quot;</span></span><br><span class="line">    public_key = file(var.public_key_file)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  os_disk &#123;</span><br><span class="line">    name                 = <span class="string">&quot;os_disk_<span class="variable">$&#123;count.index&#125;</span>&quot;</span></span><br><span class="line">    caching              = <span class="string">&quot;ReadWrite&quot;</span></span><br><span class="line">    storage_account_type = <span class="string">&quot;Standard_LRS&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  computer_name                   = <span class="string">&quot;myvm<span class="variable">$&#123;count.index&#125;</span>&quot;</span></span><br><span class="line">  admin_username                  = <span class="string">&quot;azureuser&quot;</span></span><br><span class="line">  disable_password_authentication = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  provisioner <span class="string">&quot;remote-exec&quot;</span> &#123;</span><br><span class="line">    inline = [</span><br><span class="line">      <span class="string">&quot;export PORT=<span class="variable">$&#123;var.PORT&#125;</span>&quot;</span>,</span><br><span class="line">      <span class="string">&quot;export DB_URI=<span class="variable">$&#123;var.DB_URI&#125;</span>&quot;</span>,</span><br><span class="line">      <span class="string">&quot;sudo apt update&quot;</span>,</span><br><span class="line">      <span class="string">&quot;curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash&quot;</span>,</span><br><span class="line">      <span class="string">&quot;chmod +x ~/.nvm/nvm.sh&quot;</span>,</span><br><span class="line">      <span class="string">&quot;source ~/.bashrc&quot;</span>,</span><br><span class="line">      <span class="string">&quot;nvm install 16&quot;</span>,</span><br><span class="line">      <span class="string">&quot;node -v&quot;</span>,</span><br><span class="line">      <span class="string">&quot;sudo apt install npm -y&quot;</span>,</span><br><span class="line">      <span class="string">&quot;sudo apt install git -y&quot;</span>,</span><br><span class="line">      <span class="string">&quot;mkdir /app&quot;</span>,</span><br><span class="line">      <span class="string">&quot;cd app &quot;</span>,</span><br><span class="line">      <span class="string">&quot;git clone <span class="variable">$&#123;var.repo_url&#125;</span>&quot;</span>,</span><br><span class="line">      <span class="string">&quot;cd notes-api&quot;</span>,</span><br><span class="line">      <span class="string">&quot;npm i &quot;</span>,</span><br><span class="line">      <span class="string">&quot;npm run start:dev&quot;</span>,</span><br><span class="line">    ]</span><br><span class="line">    connection &#123;</span><br><span class="line">      <span class="built_in">type</span>        = <span class="string">&quot;ssh&quot;</span></span><br><span class="line">      user        = <span class="string">&quot;azureuser&quot;</span></span><br><span class="line">      port        = 22</span><br><span class="line">      host        = azurerm_public_ip.notes-api-public-ip.ip_address</span><br><span class="line">      private_key = file(var.private_key_file)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tags = &#123;</span><br><span class="line">    environment = <span class="string">&quot;production :D&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We created the subnet for the virtual machines inside the virtual network, we setup the availability set, the 2 network interfaces for our machines and finally the machines which are Ubuntu Servers.</p>
+<blockquote>
+<p>Note: We used a provisioner to inject the api inside the machines and make it run .</p>
+</blockquote>
+<p>Then we create a public ip and assign to a loadbalancer :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#public ip for azure loadbalancer</span></span><br><span class="line">resource <span class="string">&quot;azurerm_public_ip&quot;</span> <span class="string">&quot;notes-api-public-ip&quot;</span> &#123;</span><br><span class="line">name = <span class="string">&quot;my-public-ip&quot;</span></span><br><span class="line">resource_group_name = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">location = azurerm_resource_group.notes-api-azure-resource-group.location</span><br><span class="line">allocation_method = <span class="string">&quot;Static&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#the loadbalancer itself</span></span><br><span class="line">resource <span class="string">&quot;azurerm_lb&quot;</span> <span class="string">&quot;notes-api-loadbalancer&quot;</span> &#123;</span><br><span class="line">    name = <span class="string">&quot;my-azure-loadbalancer&quot;</span></span><br><span class="line">    resource_group_name = azurerm_resource_group.notes-api-azure-resource-group.name</span><br><span class="line">    location = azurerm_resource_group.notes-api-azure-resource-group.location</span><br><span class="line">    frontend_ip_configuration &#123;</span><br><span class="line">    name = <span class="string">&quot;publicIPAddress&quot;</span></span><br><span class="line">    public_ip_address_id = azurerm_public_ip.notes-api-public-ip.id</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Now after we configured the frontend for the loadbalancer, we need to set up the backend pool address :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">resource <span class="string">&quot;azurerm_lb_backend_address_pool&quot;</span> <span class="string">&quot;notes-api-lb-backend-address-pool&quot;</span> &#123;</span><br><span class="line">    loadbalancer_id = azurerm_lb.notes-api-loadbalancer.id</span><br><span class="line">    name = <span class="string">&quot;BackEndAddressPool&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="for-1st-vm"><a href="#for-1st-vm" class="headerlink" title="for 1st vm"></a>for 1st vm</h1><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resource <span class="string">&quot;azurerm_lb_backend_address_pool_address&quot;</span> <span class="string">&quot;notes-api-lb-backend-address-pool-address&quot;</span> &#123;</span><br><span class="line">    name = <span class="string">&quot;BackEndAddressPoolAddress&quot;</span></span><br><span class="line">    backend_address_pool_id = azurerm_lb_backend_address_pool.notes-api-lb-backend-address-pool.id</span><br><span class="line">    virtual_network_id = azurerm_virtual_network.notes-api-virtual-network.id</span><br><span class="line">    ip_address = <span class="string">&quot;10.0.1.4&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="for-2nd-vm"><a href="#for-2nd-vm" class="headerlink" title="for 2nd vm"></a>for 2nd vm</h1><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resource <span class="string">&quot;azurerm_lb_backend_address_pool_address&quot;</span> <span class="string">&quot;notes-api-lb-backend-address-pool-address&quot;</span> &#123;</span><br><span class="line">    name = <span class="string">&quot;BackEndAddressPoolAddress&quot;</span></span><br><span class="line">    backend_address_pool_id = azurerm_lb_backend_address_pool.notes-api-lb-backend-address-pool.id</span><br><span class="line">    virtual_network_id = azurerm_virtual_network.notes-api-virtual-network.id</span><br><span class="line">    ip_address = <span class="string">&quot;10.0.1.5&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>After that, we add some NAT inboud rules so we could ssh to our virtual machines by passing through the loadbalancer (i’m still a newbie so i added them through the azure portal) :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*vKpdwyIGJpd6FJse2wFBzA.png"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*Ef95Os6OxSmUfNr_4v0hFw.png"
+                     
+                ></p>
+<h3 id="Testing-out-things"><a href="#Testing-out-things" class="headerlink" title="Testing out things :"></a>Testing out things :</h3><blockquote>
+<p>ssh <a class="link"   href="mailto:&#x61;&#x7a;&#x75;&#114;&#x65;&#x75;&#x73;&#101;&#114;&#x40;&#x34;&#48;&#x2e;&#x36;&#x38;&#x2e;&#x35;&#x38;&#46;&#49;&#x35;&#x38;" >&#x61;&#x7a;&#x75;&#114;&#x65;&#x75;&#x73;&#101;&#114;&#x40;&#x34;&#48;&#x2e;&#x36;&#x38;&#x2e;&#x35;&#x38;&#46;&#49;&#x35;&#x38; <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> -i ssh-key.pem</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*A8lm7bsUc3rPIkbps5DMSA.png"
+                     
+                ></p>
+<blockquote>
+<p>ssh -p 2222 <a class="link"   href="mailto:&#x61;&#122;&#x75;&#x72;&#101;&#117;&#x73;&#x65;&#114;&#x40;&#52;&#48;&#46;&#x36;&#56;&#x2e;&#x35;&#x38;&#x2e;&#x31;&#x35;&#56;" >&#x61;&#122;&#x75;&#x72;&#101;&#117;&#x73;&#x65;&#114;&#x40;&#52;&#48;&#46;&#x36;&#56;&#x2e;&#x35;&#x38;&#x2e;&#x31;&#x35;&#56; <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> -i ssh-key.pem</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*gjlE_dmUT_bVv4dZ5o0dCQ.png"
+                     
+                ></p>
+<p>And everything seems to be working perfectly .</p>
+<p>Fo the last step, we setup the loadbalancig rule as below :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*nbo1E3lRJBBsh-Hx22UI6w.png"
+                     
+                ></p>
+<p>Let’s test the api now :</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn-images-1.medium.com/max/2000/1*WCN-p-e4trzfTRXaPopuiQ.png"
+                     
+                ></p>
+<p>And voila everything seems working perfectly !</p>
+<p>To conclude, we learnt in this article about Infrastructure as code, its most popular open-source tool Terraform and the way to deploy two high availability virtual machines with a public ip loadbalancer .</p>
+<p>Was this helpful ? Confusing ? If you have any questions, feel free to comment below ! Make sure to follow on Linkedin : <a class="link"   target="_blank" rel="noopener" href="https://www.linkedin.com/in/malekzaag/" >https://www.linkedin.com/in/malekzaag/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and github : <a class="link"   target="_blank" rel="noopener" href="https://github.com/Malek-Zaag" >https://github.com/Malek-Zaag <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> if you’re interested in similar content and want to keep learning alongside me!</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Deploying 2 high availability web applications using terraform</li>
+        <li><strong>Author:</strong> Malek Zaag</li>
+        <li><strong>Created at
+                :</strong> 2023-02-13 18:39:03</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-07-27 18:42:42
+            </li>
+        
+        <li>
+            <strong>Link:</strong> http://example.com/2023/02/13/Deploying-2-high-availability-web-applications-using-terraform/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/09/28/How-to-configure-monitoring-for-Azure-Kubernetes-Service/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">How to configure monitoring for Azure Kubernetes Service</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2022/12/11/CI-CD-Pipeline-with-Jenkins-and-Argo-CD/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">CI/CD Pipeline with Jenkins and Argo CD</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Deploying 2 high availability web applications using terraform</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Deploying-2-high-availability-web-applications-using-terraform"><span class="nav-text">Deploying 2 high availability web applications using terraform</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Infrastructure-as-code"><span class="nav-text">Infrastructure as code :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Terraform"><span class="nav-text">Terraform :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#for-1st-vm"><span class="nav-text">for 1st vm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#for-2nd-vm"><span class="nav-text">for 2nd vm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Testing-out-things"><span class="nav-text">Testing out things :</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Malek Zaag</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        8 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
