@@ -102,6 +102,7 @@ theme: redefine
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/Malek-Zaag/Hexo-portfolio
-  branch: main
-  message: deploy
+  repo: 
+    github:
+      url: 'git@github.com:Malek-Zaag/Hexo-portfolio.git'
+      branch: main
