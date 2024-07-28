@@ -6,8 +6,7 @@ categories: [Blogs]
 sticky: 999
 ---
 
-# Automating Deployment using Jenkins,Ansible and AWS
-
+<br>
 In today's fast-paced software development environment, the efficient and reliable deployment of applications is crucial. A Continuous Integration/Continuous Deployment (CI/CD) pipeline plays a pivotal role in automating and streamlining the software development lifecycle. This pipeline integrates Jenkins, Ansible, and cloud services from AWS and Azure to deliver a comprehensive solution for your software deployment needs.
 
 In this article, we will demonstrate the following :

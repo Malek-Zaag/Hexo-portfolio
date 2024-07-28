@@ -11,7 +11,7 @@
 # Docs: https://redefine-docs.ohevan.com/basic/info
 info:
   # Site title
-  title: Malek Zaag
+  title: Malek Zaag's Blog
   # Author name
   author: Malek Zaag
   # Site URL
@@ -39,7 +39,7 @@ colors:
   # Secondary color (TBD)
   secondary:
   # Default theme mode initial value (will be overwritten by prefer-color-scheme)
-  default_mode: light # light, dark
+  default_mode: dark # light, dark
 # COLORS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -86,7 +86,7 @@ global:
   # Google Analytics
   google_analytics:
     enable: false # Whether to enable Google Analytics
-    id:  # Google Analytics Measurement ID
+    id: G-T5TNXJT4VY # Google Analytics Measurement ID
 # SITE CUSTOMIZATION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
     
 
@@ -124,10 +124,10 @@ home_banner:
     hitokoto:  # 一言配置
       enable: false # Whether to enable hitokoto
       api: https://v1.hitokoto.cn # API URL, can add types, see https://developer.hitokoto.cn/sentence/#%E5%8F%A5%E5%AD%90%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0
-    typing_speed: 100 # Typing speed (ms) 
-    backing_speed: 80 # Backing speed (ms)
+    typing_speed: 70 # Typing speed (ms) 
+    backing_speed: 50 # Backing speed (ms)
     starting_delay: 500 # Start delay (ms)
-    backing_delay: 1500 # Backing delay (ms)
+    backing_delay: 1400 # Backing delay (ms)
     loop: true # Whether to loop
     smart_backspace: true # Whether to smart backspace
   # Color of home banner text
@@ -153,14 +153,14 @@ home_banner:
   # Home banner social links
   social_links:
     # Whether to enable
-    enable: false
+    enable: true
     # Social links style
-    style: default # default, reverse, center
+    style: center # default, reverse, center
     # Social links
     links:
       github:  https://github.com/Malek-Zaag
-      twitter:  https://x.com/MalekZaag
       linkedin: https://www.linkedin.com/in/malekzaag/
+      medium: https://medium.com/@malek.zaag
       email:  zaag.malek1@gmail.com
       # ...... # you can add more
     # Social links with QRcode drawers
@@ -182,8 +182,8 @@ navbar:
     transparency: 35 #percent (10-99)
   # Navbar width (usually no need to modify)
   width:
-    home: 1200px #home page
-    pages: 1000px #other pages
+    home: 1400px #home page
+    pages: 1200px #other pages
   # Navbar links
   links:
     Home: 
@@ -201,7 +201,6 @@ navbar:
         Me: /about
         Github: https://github.com/Malek-Zaag
         Linkedin: https://www.linkedin.com/in/malekzaag/
-        Twitter:  https://x.com/MalekZaag
         Medium: https://medium.com/@malek.zaag
         Credly: https://www.credly.com/users/malek-zaag
     # Links: 
